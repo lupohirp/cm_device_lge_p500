@@ -75,8 +75,6 @@ service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wi
     write /sys/kernel/mm/ksm/pages_to_scan 128
     write /sys/kernel/mm/ksm/run 1
 
-echo 1 > /sys/kernel/mm/ksm/run
-
 # Wakelock debug
     write /sys/module/wakelock/parameters/debug_mask 7
 
