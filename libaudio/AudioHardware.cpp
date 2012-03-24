@@ -451,8 +451,6 @@ String8 AudioHardware::getParameters(const String8& keys)
     key = String8("tunneled-input-formats");
     if (param.get(key, value) == NO_ERROR) {
         param.addInt(String8("AMR"), true);
-        param.addInt(String8("QCELP"), true);
-        param.addInt(String8("EVRC"), true);
     }
 #endif
     LOGV("AudioHardware::getParameters() %s", param.toString().string());
@@ -1073,8 +1071,6 @@ size_t AudioHardware::getInputBufferSize(uint32_t sampleRate, int format, int ch
     if ( (format != AudioSystem::PCM_16_BIT) &&
 #ifdef WITH_QCOM_SPEECH
          (format != AudioSystem::AMR_NB)     &&
-         (format != AudioSystem::EVRC)       &&
-         (format != AudioSystem::QCELP)      &&
 #endif
          (format != AudioSystem::AAC)){
         LOGW("getInputBufferSize bad format: 0x%x", format);
@@ -1090,10 +1086,6 @@ size_t AudioHardware::getInputBufferSize(uint32_t sampleRate, int format, int ch
 #ifdef WITH_QCOM_SPEECH
     if(format == AudioSystem::AMR_NB)
        return 320*channelCount;
-    else if (format == AudioSystem::EVRC)
-       return 230*channelCount;
-    else if (format == AudioSystem::QCELP)
-       return 350*channelCount;
 #endif
     else
        return 2048*channelCount;
@@ -1751,8 +1743,6 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
         ((*pFormat != AUDIO_HW_IN_FORMAT) &&
 #ifdef WITH_QCOM_SPEECH
          (*pFormat != AudioSystem::AMR_NB) &&
-         (*pFormat != AudioSystem::EVRC) &&
-         (*pFormat != AudioSystem::QCELP) &&
 #endif
          (*pFormat != AudioSystem::AAC)))
     {
@@ -1843,9 +1833,7 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
     mBufferSize = config.buffer_size;
     }
 #ifdef WITH_QCOM_SPEECH
-    else if( (*pFormat == AudioSystem::AMR_NB) ||
-             (*pFormat == AudioSystem::EVRC) ||
-             (*pFormat == AudioSystem::QCELP))
+    else if( (*pFormat == AudioSystem::AMR_NB) )
            {
 
       // open vocie memo input device
@@ -1904,30 +1892,6 @@ status_t AudioHardware::AudioStreamInMSM72xx::set(
           gcfg.frame_format = RPC_VOC_PB_AMR; // RPC_VOC_PB_AMR
           mFormat = AudioSystem::AMR_NB;
           mBufferSize = 320;
-          break;
-        }
-
-        case AudioSystem::EVRC:
-        {
-          LOGI("Recording Format: EVRC");
-          gcfg.capability = RPC_VOC_CAP_IS127;
-          gcfg.max_rate = RPC_VOC_1_RATE; // Max rate (Fixed frame)
-          gcfg.min_rate = RPC_VOC_1_RATE; // Min rate (Fixed frame length)
-          gcfg.frame_format = RPC_VOC_PB_NATIVE_QCP;
-          mFormat = AudioSystem::EVRC;
-          mBufferSize = 230;
-          break;
-        }
-
-        case AudioSystem::QCELP:
-        {
-          LOGI("Recording Format: QCELP");
-          gcfg.capability = RPC_VOC_CAP_IS733; // RPC_VOC_CAP_AMR (64)
-          gcfg.max_rate = RPC_VOC_1_RATE; // Max rate (Fixed frame)
-          gcfg.min_rate = RPC_VOC_1_RATE; // Min rate (Fixed frame length)
-          gcfg.frame_format = RPC_VOC_PB_NATIVE_QCP;
-          mFormat = AudioSystem::QCELP;
-          mBufferSize = 350;
           break;
         }
 
