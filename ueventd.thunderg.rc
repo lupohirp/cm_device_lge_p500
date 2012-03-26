@@ -104,7 +104,11 @@
 /dev/qmi2                 0640   radio      radio
 /dev/bus/usb/*            0660   root       usb
 /dev/gemini0              0660   system     system
+/dev/mtp_usb              0660   root       mtp
 /dev/usb_accessory        0660   root       usb
+/dev/tun                  0660   system     vpn
+/dev/qemu_trace           0666   system     system
+/dev/qemu_pipe            0666   system     system
 
 # CDMA radio interface MUX
 /dev/ts0710mux*           0640   radio      radio
@@ -119,8 +123,7 @@
 #permissions for audio
 /dev/msm_amrnb            0660  system       audio
 /dev/msm_amrwb            0660  system       audio
-/dev/msm_aac              0660  system       audio
-/dev/msm_aac_in           0660  system       audio
+/dev/msm_aac*             0660  system       audio
 /dev/msm_qcelp            0660  system       audio
 /dev/msm_evrc             0660  system       audio
 /dev/msm_fm               0660  system       audio
@@ -152,6 +155,9 @@
 /dev/sdioctl5             0640  radio        radio
 /dev/sdioctl6             0640  radio        radio
 /dev/sdioctl7             0640  radio        radio
+
+# video encoder on 720p-enabled 8k targets
+/dev/pmem_venc            0660   system     audio
 
 /dev/oncrpc/*             0660  system	     qcom_oncrpc
 /dev/ami304hal		  0640  compass	     system
