@@ -11,19 +11,25 @@ ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
     LOCAL_CFLAGS += -DQCOM_HARDWARE
 endif
 
-
-LOCAL_SRC_FILES := \
-    AudioHardware.cpp \
-    audio_hw_hal.cpp
-
-
 ifeq ($(BOARD_HAVE_BLUETOOTH),true)
     LOCAL_CFLAGS += -DWITH_A2DP
 endif
 
-ifeq ($(BOARD_USES_QCOM_AUDIO_SPEECH),true)
-    LOCAL_CFLAGS += -DWITH_QCOM_SPEECH
+ifeq ($(BOARD_HAVE_FM_RADIO),true)
+    LOCAL_CFLAGS += -DHAVE_FM_RADIO
 endif
+
+ifeq ($(BOARD_COMBO_DEVICE_SUPPORTED),true)
+    LOCAL_CFLAGS += -DCOMBO_DEVICE_SUPPORTED
+endif
+
+ifeq ($(BOARD_CDMA_NETWORK),true)
+    LOCAL_CFLAGS += -DCDMA_NETWORK
+endif
+
+LOCAL_SRC_FILES := \
+    AudioHardware.cpp \
+    audio_hw_hal.cpp
 
 LOCAL_SHARED_LIBRARIES := \
     libcutils       \
@@ -53,9 +59,30 @@ LOCAL_C_INCLUDES += system/core/include
 
 include $(BUILD_SHARED_LIBRARY)
 
-
+# -------------------------------------------------------------
 # The audio policy is implemented on top of legacy policy code
+# -------------------------------------------------------------
 include $(CLEAR_VARS)
+
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+    LOCAL_CFLAGS += -DQCOM_HARDWARE
+endif
+
+ifeq ($(BOARD_HAVE_BLUETOOTH),true)
+    LOCAL_CFLAGS += -DWITH_A2DP
+endif
+
+ifeq ($(BOARD_HAVE_FM_RADIO),true)
+    LOCAL_CFLAGS += -DHAVE_FM_RADIO
+endif
+
+ifeq ($(BOARD_COMBO_DEVICE_SUPPORTED),true)
+    LOCAL_CFLAGS += -DCOMBO_DEVICE_SUPPORTED
+endif
+
+ifeq ($(BOARD_CDMA_NETWORK),true)
+    LOCAL_CFLAGS += -DCDMA_NETWORK
+endif
 
 LOCAL_SRC_FILES := \
     AudioPolicyManager.cpp \
@@ -73,10 +100,6 @@ LOCAL_STATIC_LIBRARIES := \
 LOCAL_MODULE := audio_policy.p500
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
 LOCAL_MODULE_TAGS := optional
-
-ifeq ($(BOARD_HAVE_BLUETOOTH),true)
-    LOCAL_CFLAGS += -DWITH_A2DP
-endif
 
 LOCAL_C_INCLUDES := hardware/libhardware_legacy/audio
 
