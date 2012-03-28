@@ -17,13 +17,19 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
+# boot.img temp files
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/bootimg/init:root/init \
+    $(LOCAL_PATH)/bootimg/init.rc:root/init.rc \
+    $(LOCAL_PATH)/bootimg/adbd:root/sbin/adbd \
+    $(LOCAL_PATH)/bootimg/default.prop:root/default.prop \
+
 # Board-specific init
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/initlogo.rle:root/initlogo.rle \
     $(LOCAL_PATH)/init.thunderg.rc:root/init.thunderg.rc \
     $(LOCAL_PATH)/init.thunderg.usb.rc:root/init.thunderg.usb.rc \
     $(LOCAL_PATH)/ueventd.thunderg.rc:root/ueventd.thunderg.rc \
-#    $(LOCAL_PATH)/init.rc:root/init.rc # Why are we including our own init.rc and default.prop?
 
 # BT startup
 PRODUCT_COPY_FILES += \
