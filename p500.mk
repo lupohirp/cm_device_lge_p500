@@ -23,7 +23,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.thunderg.rc:root/init.thunderg.rc \
     $(LOCAL_PATH)/init.thunderg.usb.rc:root/init.thunderg.usb.rc \
     $(LOCAL_PATH)/ueventd.thunderg.rc:root/ueventd.thunderg.rc \
-    $(LOCAL_PATH)/init.rc:root/init.rc # Why are we including our own init.rc?
+#    $(LOCAL_PATH)/init.rc:root/init.rc # Why are we including our own init.rc and default.prop?
 
 # BT startup
 PRODUCT_COPY_FILES += \
@@ -88,16 +88,19 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libgenlock \
     libmemalloc \
-    libopencorehw \
     liboverlay \
     libQcomUI \
-    libstagefrighthw \
-    libtilerenderer
+    libtilerenderer \
+    libopencorehw \
 
-# Media
+# QCOM OMX
 PRODUCT_PACKAGES += \
+    libstagefrighthw \
     libOmxCore \
-    libmm-omxcore
+    libmm-omxcore \
+    libdivxdrmdecrypt \
+    libOmxVdec \
+    libOmxVenc
 
 # Misc
 PRODUCT_PACKAGES += \
