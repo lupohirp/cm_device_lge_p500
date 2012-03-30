@@ -24,8 +24,8 @@
 #include <hardware/audio.h>
 
 //#include "AudioHardware.h"
+#include "../include/hardware_legacy/AudioSystemLegacy.h"
 #include <hardware_legacy/AudioHardwareInterface.h>
-#include <hardware_legacy/AudioSystemLegacy.h>
 
 namespace android_audio_legacy {
 

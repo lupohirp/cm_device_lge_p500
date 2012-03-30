@@ -114,7 +114,8 @@ PRODUCT_PACKAGES += \
     gps.p500 \
     lights.p500 \
     hwaddrs \
-    lgapversion
+    lgapversion \
+    hcitool
 
 $(call inherit-product, build/target/product/full.mk)
 
