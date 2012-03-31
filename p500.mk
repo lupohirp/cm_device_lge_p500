@@ -17,10 +17,6 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
-# boot.img temp files
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/bootimg/init.rc:root/init.rc
-
 # Board-specific init
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/initlogo.rle:root/initlogo.rle \
