@@ -19,10 +19,7 @@ PRODUCT_COPY_FILES += \
 
 # boot.img temp files
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/bootimg/init:root/init \
-    $(LOCAL_PATH)/bootimg/init.rc:root/init.rc \
-    $(LOCAL_PATH)/bootimg/adbd:root/sbin/adbd \
-    $(LOCAL_PATH)/bootimg/default.prop:root/default.prop \
+    $(LOCAL_PATH)/bootimg/init.rc:root/init.rc
 
 # Board-specific init
 PRODUCT_COPY_FILES += \
