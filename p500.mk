@@ -97,6 +97,9 @@ PRODUCT_PACKAGES += \
 
 # Display
 PRODUCT_PACKAGES += \
+    gralloc.msm7x27 \
+    copybit.msm7x27 \
+    hwcomposer.msm7x27 \
     libgenlock \
     libmemalloc \
     liboverlay \
@@ -118,9 +121,13 @@ PRODUCT_PACKAGES += \
     com.android.future.usb.accessory \
     gps.p500 \
     lights.p500 \
+    camera.p500 \
     hwaddrs \
     lgapversion \
     hcitool
+
+# we have enough storage space to hold precise GC data
+PRODUCT_TAGS += dalvik.gc.type-precise
 
 $(call inherit-product, build/target/product/full.mk)
 

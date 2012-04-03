@@ -5,10 +5,15 @@ $(call inherit-product, vendor/cm/config/gsm.mk)
 $(call inherit-product, device/lge/p500/p500.mk)
 
 # Inherit some common cyanogenmod stuff.
-$(call inherit-product, vendor/cm/config/common_mini_phone.mk)
+$(call inherit-product, vendor/cm/config/common_full_phone.mk)
 
 # Include FM-Radio stuff
 #$(call inherit-product, vendor/cyanogen/products/bcm_fm_radio.mk)
+
+#include qcom opensource features
+$(call inherit-product, vendor/qcom/opensource/omx/mm-core/Android.mk)
+$(call inherit-product, vendor/qcom/opensource/omx/mm-video/Android.mk)
+
 
 PRODUCT_NAME := cm_p500
 PRODUCT_BRAND := lge
