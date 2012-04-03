@@ -74,9 +74,21 @@ PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/base/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml
 
+# Apps
+PRODUCT_PACKAGES += \
+    LiveWallpapers \
+    LiveWallpapersPicker \
+    MagicSmokeWallpapers \
+    VisualizationWallpapers \
+    librs_jni
+
 # IDC file
 PRODUCT_COPY_FILES += \
     vendor/lge/p500/proprietary/usr/idc/touch_mcs6000.idc:system/usr/idc/touch_mcs6000.idc\
+
+# Publish that we support the live wallpaper feature.
+PRODUCT_COPY_FILES += \
+    packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml
 
 # Audio
 PRODUCT_PACKAGES += \
