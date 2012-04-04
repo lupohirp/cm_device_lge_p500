@@ -43,6 +43,16 @@ on boot
     write /sys/kernel/mm/ksm/sleep_millisecs 1500
     write /sys/kernel/mm/ksm/pages_to_scan 256
 
+    # Permissions for Liblights.
+    chown system system /sys/class/leds/green/brightness
+    chown system system /sys/class/leds/green/blink
+    chown system system /sys/class/leds/amber/brightness
+    chown system system /sys/class/leds/amber/blink
+    chown system system /sys/class/leds/button-backlight/brightness
+    chown system system /sys/class/leds/flashlight/brightness
+    chown system system /sys/class/leds/lcd-backlight/brightness
+    chown system system /sys/class/leds/keyboard-backlight/brightness
+
 ## LGE's bluetooth stuff
 # bluetooth permissions
     chmod 0660 /dev/ttyHS0
@@ -94,6 +104,13 @@ service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wi
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
     group system wifi inet
+    disabled
+    oneshot
+
+service setapversion /system/bin/lgapversion
+    class main
+    user radio
+    group radio
     disabled
     oneshot
 
@@ -153,3 +170,7 @@ service map /system/bin/sdptool add --channel=16 MAS
 
 on property:dev.bootcomplete=1
     exec /system/bin/hwaddrs
+
+## Set proper baseband version after getting the dummy from RIL
+on property:gsm.version.baseband=V07u-000-000-MAR-23-2009
+    start setapversion
