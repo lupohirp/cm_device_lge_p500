@@ -93,7 +93,8 @@ PRODUCT_COPY_FILES += \
 # Audio
 PRODUCT_PACKAGES += \
     audio_policy.p500 \
-    audio.primary.p500
+    audio.primary.p500 \
+    audio.a2dp.default
 
 # Display
 PRODUCT_PACKAGES += \
