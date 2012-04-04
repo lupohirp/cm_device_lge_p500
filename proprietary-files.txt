@@ -16,6 +16,7 @@ lib/liboncrpc.so
 lib/libril-qc-qmi-1.so
 lib/libnv.so
 lib/libauth.so
+lib/libril.so
 lib/libwms.so
 lib/libgsl.so
 lib/libdiag.so
