@@ -1,41 +1,36 @@
-/* Copyright (c) 2002,2007-2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2002,2007-2010, Code Aurora Forum. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, and the entire permission notice in its entirety,
- *    including the disclaimer of warranties.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. The name of the author may not be used to endorse or promote
- *    products derived from this software without specific prior
- *    written permission.
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ *       copyright notice, this list of conditions and the following
+ *       disclaimer in the documentation and/or other materials provided
+ *       with the distribution.
+ *     * Neither the name of Code Aurora Forum, Inc. nor the names of its
+ *       contributors may be used to endorse or promote products derived
+ *       from this software without specific prior written permission.
  *
- * ALTERNATIVELY, this product may be distributed under the terms of
- * the GNU General Public License, version 2, in which case the provisions
- * of the GPL version 2 are required INSTEAD OF the BSD license.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ALL OF
- * WHICH ARE HEREBY DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF NOT ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE.
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 #ifndef _MSM_KGSL_H
 #define _MSM_KGSL_H
 
 #define KGSL_VERSION_MAJOR        3
-#define KGSL_VERSION_MINOR        7
+#define KGSL_VERSION_MINOR        8
 
 /*context flags */
 #define KGSL_CONTEXT_SAVE_GMEM	1
@@ -60,12 +55,15 @@
 
 #define KGSL_MAX_PWRLEVELS 5
 
+#define KGSL_CONVERT_TO_MBPS(val) \
+  (val*1000*1000U)
+
 /* device id */
 enum kgsl_deviceid {
-	KGSL_DEVICE_3D0		= 0x00000000,
-	KGSL_DEVICE_2D0		= 0x00000001,
-	KGSL_DEVICE_2D1		= 0x00000002,
-	KGSL_DEVICE_MAX		= 0x00000003
+	KGSL_DEVICE_3D0	= 0x00000000,
+	KGSL_DEVICE_2D0	= 0x00000001,
+	KGSL_DEVICE_2D1	= 0x00000002,
+	KGSL_DEVICE_MAX	= 0x00000003
 };
 
 enum kgsl_user_mem_type {
@@ -83,9 +81,12 @@ struct kgsl_devinfo {
 	unsigned int chip_id;
 	unsigned int mmu_enabled;
 	unsigned int gmem_gpubaseaddr;
-	/* if gmem_hostbaseaddr is NULL, we would know its not mapped into
-	 * mmio space */
-	unsigned int gmem_hostbaseaddr;
+
+	/*
+	* This field contains the adreno revision
+	* number 200, 205, 220, etc...
+	*/
+	unsigned int gpu_id;
 	unsigned int gmem_sizebytes;
 };
 
@@ -135,26 +136,28 @@ struct kgsl_shadowprop {
 	unsigned int flags; /* contains KGSL_FLAGS_ values */
 };
 
+
+
 struct kgsl_pwrlevel {
-	unsigned int gpu_freq;
-	unsigned int bus_freq;
+  unsigned int gpu_freq;
+  unsigned int bus_freq;
 };
 
 struct kgsl_version {
-	unsigned int drv_major;
-	unsigned int drv_minor;
-	unsigned int dev_major;
-	unsigned int dev_minor;
+  unsigned int drv_major;
+  unsigned int drv_minor;
+  unsigned int dev_major;
+  unsigned int dev_minor;
 };
 
 #ifdef __KERNEL__
 
-#define KGSL_3D0_REG_MEMORY	"kgsl_3d0_reg_memory"
-#define KGSL_3D0_IRQ		"kgsl_3d0_irq"
-#define KGSL_2D0_REG_MEMORY	"kgsl_2d0_reg_memory"
-#define KGSL_2D0_IRQ		"kgsl_2d0_irq"
-#define KGSL_2D1_REG_MEMORY	"kgsl_2d1_reg_memory"
-#define KGSL_2D1_IRQ		"kgsl_2d1_irq"
+#define KGSL_3D0_REG_MEMORY  "kgsl_3d0_reg_memory"
+#define KGSL_3D0_IRQ    "kgsl_3d0_irq"
+#define KGSL_2D0_REG_MEMORY  "kgsl_2d0_reg_memory"
+#define KGSL_2D0_IRQ    "kgsl_2d0_irq"
+#define KGSL_2D1_REG_MEMORY  "kgsl_2d1_reg_memory"
+#define KGSL_2D1_IRQ    "kgsl_2d1_irq"
 
 struct kgsl_grp_clk_name {
 	const char *clk;
@@ -168,7 +171,6 @@ struct kgsl_device_pwr_data {
 	int (*set_grp_async)(void);
 	unsigned int idle_timeout;
 	unsigned int nap_allowed;
-	unsigned int idle_pass;
 };
 
 struct kgsl_clk_data {
@@ -181,6 +183,8 @@ struct kgsl_device_platform_data {
 	struct kgsl_clk_data clk;
 	/* imem_clk_name is for 3d only, not used in 2d devices */
 	struct kgsl_grp_clk_name imem_clk_name;
+	const char *iommu_user_ctx_name;
+	const char *iommu_priv_ctx_name;
 };
 
 #endif
@@ -289,11 +293,11 @@ struct kgsl_cmdstream_freememontimestamp {
 #define IOCTL_KGSL_CMDSTREAM_FREEMEMONTIMESTAMP \
 	_IOW(KGSL_IOC_TYPE, 0x12, struct kgsl_cmdstream_freememontimestamp)
 
-/* Previous versions of this header had incorrectly defined
-   IOCTL_KGSL_CMDSTREAM_FREEMEMONTIMESTAMP as a read-only ioctl instead
-   of a write only ioctl.  To ensure binary compatability, the following
-   #define will be used to intercept the incorrect ioctl
-*/
+	/* Previous versions of this header had incorrectly defined
+	   IOCTL_KGSL_CMDSTREAM_FREEMEMONTIMESTAMP as a read-only ioctl instead
+	   of a write only ioctl.  To ensure binary compatability, the following
+	   #define will be used to intercept the incorrect ioctl
+	*/
 
 #define IOCTL_KGSL_CMDSTREAM_FREEMEMONTIMESTAMP_OLD \
 	_IOR(KGSL_IOC_TYPE, 0x12, struct kgsl_cmdstream_freememontimestamp)
@@ -434,6 +438,7 @@ struct kgsl_cmdwindow_write {
 #define IOCTL_KGSL_CMDWINDOW_WRITE \
 	_IOW(KGSL_IOC_TYPE, 0x2e, struct kgsl_cmdwindow_write)
 
+
 struct kgsl_gpumem_alloc {
 	unsigned long gpuaddr;
 	size_t size;
@@ -452,6 +457,30 @@ struct kgsl_cff_syncmem {
 #define IOCTL_KGSL_CFF_SYNCMEM \
 	_IOW(KGSL_IOC_TYPE, 0x30, struct kgsl_cff_syncmem)
 
+/*
+* A timestamp event allows the user space to register an action following an
+* expired timestamp.
+*/
+
+struct kgsl_timestamp_event {
+	int type;                /* Type of event (see list below) */
+	unsigned int timestamp;  /* Timestamp to trigger event on */
+	unsigned int context_id; /* Context for the timestamp */
+	void *priv;              /* Pointer to the event specific blob */
+	size_t len;              /* Size of the event specific blob */
+};
+
+#define IOCTL_KGSL_TIMESTAMP_EVENT \
+	_IOW(KGSL_IOC_TYPE, 0x31, struct kgsl_timestamp_event)
+
+/* A genlock timestamp event releases an existing lock on timestamp expire */
+
+#define KGSL_TIMESTAMP_EVENT_GENLOCK 1
+
+struct kgsl_timestamp_event_genlock {
+	int handle; /* Handle of the genlock lock to release */
+};
+
 #ifdef __KERNEL__
 #ifdef CONFIG_MSM_KGSL_DRM
 int kgsl_gem_obj_addr(int drm_fd, int handle, unsigned long *start,
@@ -461,3 +490,5 @@ int kgsl_gem_obj_addr(int drm_fd, int handle, unsigned long *start,
 #endif
 #endif
 #endif /* _MSM_KGSL_H */
+
+
