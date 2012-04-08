@@ -24,8 +24,8 @@
 #include <hardware/audio.h>
 
 //#include "AudioHardware.h"
-#include "../include/hardware_legacy/AudioSystemLegacy.h"
 #include <hardware_legacy/AudioHardwareInterface.h>
+#include <hardware_legacy/AudioSystemLegacy.h>
 
 namespace android_audio_legacy {
 
@@ -320,7 +320,7 @@ static uint32_t adev_get_supported_devices(const struct audio_hw_device *dev)
             AUDIO_DEVICE_OUT_ANLG_DOCK_HEADSET |
             AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET |
             AUDIO_DEVICE_OUT_ALL_SCO |
-#ifdef FM_RADIO
+#ifdef HAVE_FM_RADIO
             AUDIO_DEVICE_OUT_FM |
 #endif
             AUDIO_DEVICE_OUT_DEFAULT |

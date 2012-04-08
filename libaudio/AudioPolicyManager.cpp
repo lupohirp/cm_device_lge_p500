@@ -239,7 +239,7 @@ status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_h
     // - the force flag is set
     if (volume != mOutputs.valueFor(output)->mCurVolume[stream] ||
         (stream == AudioSystem::VOICE_CALL) ||
-#ifdef FM_RADIO
+#ifdef HAVE_FM_RADIO
 	    (stream == AudioSystem::FM) ||
 #endif
 	force) {
@@ -266,7 +266,7 @@ status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_h
         }
         
         if ((voiceVolume >= 0 && output == mHardwareOutput)
-#ifdef FM_RADIO
+#ifdef HAVE_FM_RADIO
           && (!(mAvailableOutputDevices & AudioSystem::DEVICE_OUT_FM))
 #endif
         ) {
@@ -274,7 +274,7 @@ status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_h
             mLastVoiceVolume = voiceVolume;
         }
     }
-#ifdef FM_RADIO
+#ifdef HAVE_FM_RADIO
     else if ((stream == AudioSystem::FM) && (mAvailableOutputDevices & AudioSystem::DEVICE_OUT_FM)) {
         float fmVolume = -1.0;
         fmVolume = (float)index/(float)mStreams[stream].mIndexMax;
