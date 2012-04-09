@@ -156,10 +156,12 @@ AudioHardware::AudioHardware() :
                 CHECK_FOR(TTY_HEADSET);
                 CHECK_FOR(TTY_HCO);
                 CHECK_FOR(TTY_VCO);
+                CHECK_FOR(CARKIT);
 #ifdef HAVE_FM_RADIO
                 CHECK_FOR(FM_SPEAKER);
                 CHECK_FOR(FM_HEADSET);
 #endif
+                CHECK_FOR(NO_MIC_HEADSET);
 #undef CHECK_FOR
             }
         }
