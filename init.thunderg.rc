@@ -16,7 +16,6 @@ on early-init
 on init
 #######
 # setup the global environment
-  export DOWNLOAD_CACHE /cache/download
   export EXTERNAL_STORAGE /mnt/sdcard
   export SD_EXT_DIRECTORY /sd-ext
 
