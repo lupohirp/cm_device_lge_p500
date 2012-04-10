@@ -7,11 +7,12 @@ ARCH_ARM_HAVE_VFP := true
 
 TARGET_NO_BOOTLOADER := true
 TARGET_BOARD_PLATFORM := msm7x27
-TARGET_CPU_ABI := armeabi
+TARGET_CPU_ABI := armeabi-v6l
+TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv6-vfp
 TARGET_BOOTLOADER_BOARD_NAME := p500
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
-TARGET_PREBUILT_KERNEL := device/lge/p500/kernel
+TARGET_PREBUILT_KERNEL := device/lge/p500/prebuilt/zImage
 TARGET_OTA_ASSERT_DEVICE := thunderg,p500
 
 # msm7x27: no support for overlay, bypass, or c2d
@@ -20,7 +21,6 @@ TARGET_HAVE_BYPASS := false
 TARGET_USES_C2D_COMPOSITION := false
 # Skia
 BOARD_USE_SKIA_LCDTEXT := true
-BOARD_FORCE_DITHERING := true
 
 
 BOARD_USES_QCOM_HARDWARE := true

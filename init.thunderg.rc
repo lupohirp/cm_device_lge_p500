@@ -30,14 +30,6 @@ on init
 
 
 
-
-on boot-pause
-#############
-# charger
-  exec sbin/chargerlogo
-
-
-
 on post-fs
 ##########
 # nv
@@ -132,6 +124,10 @@ on boot
 ############################################################################
 ## S E R V I C E S
 ############################################################################
+service chargerlogo /sbin/chargerlogo
+    class charger
+    user root
+
 service qmuxd /system/bin/qmuxd
     class main
     user radio
