@@ -19,8 +19,6 @@ ro.telephony.call_ring.multiple=false
 ro.telephony.ril.v3=signalstrength,skipbrokendatacall,facilitylock,datacall,icccardstatus,1
 mobiledata.interfaces=rmnet0,rmnet1,rmnet2
 
-# larger vm heaps
-dalvik.vm.heapsize=24m
 
 # modified camera blob wants this
 ro.product.camera=thunderg
