@@ -1,23 +1,22 @@
-on boot-pause
-    exec sbin/chargerlogo
+############################################################################
+##  I M P O R T / E X P O R T
+############################################################################
+import init.p500.usb.rc
 
 
-import init.thunderg.usb.rc
-
-
-#
+############################################################################
+## T R I G G E R S   &   A C T I O N S
+############################################################################
 on early-init
-
-    mkdir /system
-    mkdir /data 0771 system system
-    mkdir /cache 0770 system cache
-    mkdir /mnt/sdcard 0000 system system
-    mkdir /sd-ext 0771 system system
+#############
+# create mountpoints
+  mkdir /mnt/sdcard 0000 system system
+  mkdir /sd-ext 0771 system system
 
 
 
 on init
-
+#######
 # setup the global environment
   export EXTERNAL_STORAGE /mnt/sdcard
   export SD_EXT_DIRECTORY /sd-ext
@@ -32,40 +31,14 @@ on init
   chmod 0666 /dev/msm_camera/frame0
   chmod 0666 /dev/msm_camera/pic0
 
-# Define the memory thresholds at which the above process classes will
-# be killed.  These numbers are in pages (4k).
-    setprop ro.FOREGROUND_APP_MEM 3584
-    setprop ro.VISIBLE_APP_MEM 4096
-    setprop ro.SECONDARY_SERVER_MEM 6144
-    setprop ro.BACKUP_APP_MEM 6144
-    setprop ro.HOME_APP_MEM 6144
-    setprop ro.HIDDEN_APP_MEM 7168
-    setprop ro.CONTENT_PROVIDER_MEM 7680
-    setprop ro.EMPTY_APP_MEM 8192
-
-# Overwrite framework low memory killer minfree setting
-    write /sys/module/lowmemorykiller/parameters/minfree 3584,4096,6144,7168,7680,8192
-
-# Enable low memory killer to check file pages
-    write /sys/module/lowmemorykiller/parameters/minfile 0,0,0,5120,5632,6144
-    write /sys/module/lowmemorykiller/parameters/check_filepages 1
-
-# fix for enropy service and some other that failed
-   chmod 0755 /data/system/appwidgets.xml
-   chmod 0755 /data/system/entropy.dat
-   chmod 0755 /data/system/wallpaper_info.xml
-
 
 
 on post-fs
-
+##########
 # nv
   mkdir /data/nv
   chown system system /data/nv
   chmod 0711 /data/nv
-
-  mkdir /data/local/download 0771 system cache
-  mkdir /cache/download 0771 system cache
 
 # wifi
   chmod 0777 /data/misc/wifi/config_mac
@@ -77,13 +50,16 @@ on post-fs
 
 
 on post-fs-data
-
+###############
 # wifi
   mkdir /data/misc/wifi 0770 wifi wifi
   mkdir /data/misc/wifi/sockets 0770 wifi wifi
   mkdir /data/misc/dhcp 0770 dhcp dhcp
   chown dhcp dhcp /data/misc/dhcp
 
+# download (gplay)
+  mkdir /data/local/download 0771 system cache
+  mkdir /cache/download 0771 system cache
 
 # last line for post-fs-data
   setprop vold.post_fs_data_done 1
@@ -92,7 +68,7 @@ on post-fs-data
 
 
 on boot
-
+#######
 # radio
   mkdir /data/radio 0770 radio radio
   chmod 2770 /data/radio
@@ -143,12 +119,12 @@ on boot
 # Wakelock debug
   write /sys/module/wakelock/parameters/debug_mask 7
 
-on fs
-
-    # framebuffer permission for copybit
-      chmod 0666 /dev/graphics/fb0
 
 
+
+############################################################################
+## S E R V I C E S
+############################################################################
 service chargerlogo /sbin/chargerlogo
     class charger
     user root
@@ -245,6 +221,10 @@ service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
     disabled
     oneshot
 
+
+############################################################################
+##  P R O P E R T I E S
+############################################################################
 
 ## Stop dhcpcd when wifi was stopped
 on property:init.svc.wpa_supplicant=stopped

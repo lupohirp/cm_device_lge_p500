@@ -83,17 +83,8 @@ struct pmem_allocation {
 };
 
 #ifdef __KERNEL__
-int get_pmem_file(unsigned int fd, unsigned long *start, unsigned long *vstart,
-		  unsigned long *end, struct file **filp);
-int get_pmem_fd(int fd, unsigned long *start, unsigned long *end);
-int get_pmem_user_addr(struct file *file, unsigned long *start,
-		       unsigned long *end);
-void put_pmem_file(struct file* file);
 void put_pmem_fd(int fd);
 void flush_pmem_fd(int fd, unsigned long start, unsigned long len);
-void flush_pmem_file(struct file *file, unsigned long start, unsigned long len);
-int pmem_cache_maint(struct file *file, unsigned int cmd,
-		struct pmem_addr *pmem_addr);
 
 enum pmem_allocator_type {
 	/* Zero is a default in platform PMEM structures in the board files,
@@ -101,6 +92,7 @@ enum pmem_allocator_type {
 	 * defined
 	 */
 	PMEM_ALLOCATORTYPE_BITMAP = 0, /* forced to be zero here */
+	PMEM_ALLOCATORTYPE_SYSTEM,
 
 	PMEM_ALLOCATORTYPE_ALLORNOTHING,
 	PMEM_ALLOCATORTYPE_BUDDYBESTFIT,
@@ -124,10 +116,6 @@ enum pmem_allocator_type {
 #define PMEM_ALIGNMENT_1M 0x10
 #define PMEM_ALIGNMENT_RESERVED_INVALID2 0x18
 
-/* flags in the following function defined as above. */
-int32_t pmem_kalloc(const size_t size, const uint32_t flags);
-int32_t pmem_kfree(const int32_t physaddr);
-
 /* kernel api names for board specific data structures */
 #define PMEM_KERNEL_EBI1_DATA_NAME "pmem_kernel_ebi1"
 #define PMEM_KERNEL_SMI_DATA_NAME "pmem_kernel_smi"
@@ -141,6 +129,8 @@ struct android_pmem_platform_data
 	unsigned long size;
 
 	enum pmem_allocator_type allocator_type;
+	/* set to indicate the region should not be managed with an allocator */
+	enum pmem_allocator_type no_allocator;
 	/* treated as a 'hidden' variable in the board files. Can be
 	 * set, but default is the system init value of 0 which becomes a
 	 * quantum of 4K pages.
@@ -157,13 +147,25 @@ struct android_pmem_platform_data
 	unsigned unstable;
 };
 
+/* flags in the following function defined as above. */
+int32_t pmem_kalloc(const size_t size, const uint32_t flags);
+int32_t pmem_kfree(const int32_t physaddr);
+
+int is_pmem_file(struct file *file);
+unsigned long get_pmem_id_addr(int id);
+int get_pmem_file(unsigned int fd, unsigned long *start, unsigned long *vstart,
+		  unsigned long *end, struct file **filp);
+int get_pmem_user_addr(struct file *file, unsigned long *start,
+		       unsigned long *end);
+void put_pmem_file(struct file* file);
+void flush_pmem_file(struct file *file, unsigned long start, unsigned long len);
 int pmem_setup(struct android_pmem_platform_data *pdata,
 	       long (*ioctl)(struct file *, unsigned int, unsigned long),
 	       int (*release)(struct inode *, struct file *));
-
 int pmem_remap(struct pmem_region *region, struct file *file,
 	       unsigned operation);
-#endif /* __KERNEL__ */
 
 #endif //_ANDROID_PPP_H_
+
+#endif
 

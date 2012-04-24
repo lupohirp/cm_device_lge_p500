@@ -22,7 +22,7 @@
 /dev/kgsl-3d0             0666   root       root
 /dev/kgsl-2d0             0666   root       root
 /dev/kgsl-2d1             0666   root       root
-/dev/genlock            0666    system  graphics
+/dev/genlock              0666   system     graphics
 
 # these should not be world writable
 /dev/diag_arm9            0660   radio      radio
@@ -48,7 +48,7 @@
 /dev/adsp/*               0660   system     audio
 /dev/snd/*                0660   system     audio
 /dev/mt9t013              0660   system     system
-/dev/msm_camera/*         0660   system     camera
+/dev/msm_camera/*         0660   system     system
 /dev/akm8976_daemon       0640   compass    system
 /dev/akm8976_aot          0640   compass    system
 /dev/akm8973_daemon       0640   compass    system
@@ -158,7 +158,6 @@
 
 # video encoder on 720p-enabled 8k targets
 /dev/pmem_venc            0660   system     audio
-/dev/msm_vidc*            0777   system     graphics
 
 /dev/oncrpc/*             0660  system	     qcom_oncrpc
 /dev/ami304hal		  0640  compass	     system
